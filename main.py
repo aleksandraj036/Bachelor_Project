@@ -144,7 +144,7 @@ for root, dirs, files in os.walk(folder):
                     paired_end[paired] = 1
 
 
-folders = ['OUT', 'TRIMMED', 'STATUS', 'index', 'bowtie2', 'SALMON_OUT', 'plots', 'plots/differential', 'plots/density']
+folders = ['OUT', 'TRIMMED', 'STATUS', 'index', 'bowtie2', 'SALMON_OUT', 'plots', 'plots/differential', 'plots/density', 'plots/mapping', 'plots/quality']
 
 #create necessary folders
 for folder_name in folders:

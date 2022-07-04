@@ -11,7 +11,7 @@ import plotly.io as pio
 
 pio.kaleido.scope.mathjax = None #prevents from unnecessary error  popping up for pdf files
 
-with open("OUT/gene_expression_all.csv", "w+") as genes:
+with open("OUT/gene_expression_all.tsv", "w+") as genes:
         genes.write(f"Sample ID\tAll_genes\tExpressed_genes\n")
 folder = "SALMON_OUT"
 
@@ -21,23 +21,22 @@ for root, dirs, files in os.walk(folder):
             sample = root.split('/')[1]
             all_genes = sum(1 for line in open(f"{root}/{file_name}")) - 1
             dataframe = pd.read_csv(f"{root}/{file_name}",delimiter="\t")
-            dataframe.to_csv(f"./OUT/salmon_{sample}.csv", encoding='utf-8', index = 0)
-            data = pd.read_csv(f"./OUT/salmon_{sample}.csv" )
+            dataframe.to_csv(f"./OUT/salmon_{sample}.tsv", encoding='utf-8', index = 0)
+            data = pd.read_csv(f"./OUT/salmon_{sample}.tsv" )
             df = pd.DataFrame(data)
             value = (df.iloc[:,3])
             no_zeros = value[(value > 0)]
             no_zeros = np.log10(no_zeros)
             df['zeros'] = no_zeros
-            #creating density plot for every sample
             density = sns.displot(data = df, x= 'zeros',  kind="kde")
             density.set(xlabel = "Intervals", title=sample)
-            density.figure.savefig(f"plots/density/{sample}.pdf", bbox_inches='tight') 
+            density.figure.savefig(f"plots/density/{sample}.pdf", bbox_inches='tight') #creating density plot for every sample
             expressed_genes = no_zeros.size
-            with open("OUT/gene_expression_all.csv", "a") as genes:
+            with open("OUT/gene_expression_all.tsv", "a") as genes:
                 genes.write(f"{sample}\t{all_genes}\t{expressed_genes}\n")
 
 #creating bar chart with gene expression %
-with open("OUT/gene_expression_all.csv", "r") as g:
+with open("OUT/gene_expression_all.tsv", "r") as g:
     dataframe2 = pd.read_csv(g, delimiter="\t")
     samples = dataframe2['Sample ID']
     all_g = dataframe2['All_genes']
