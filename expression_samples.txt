@@ -1,0 +1,8 @@
+SRR1747301  case
+SRR1747299  case
+SRR1747303  case
+SRR5804471  case
+SRR1747399  control
+SRR1747397  control
+SRR1747280  control
+SRR1747400  control

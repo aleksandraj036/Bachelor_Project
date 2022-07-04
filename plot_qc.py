@@ -16,7 +16,7 @@ for root, dirs, files in os.walk('STATUS'):
         if 'log' in file_name:
             current_file = os.path.join(root, file_name)
             with open(os.path.abspath(f"./{current_file}")) as log:
-                num = [int(s) for s in ((log.readlines()[4]).lstrip(' ')).split() if s.isdigit()][:2] #raw and after qc values
+                num = [int(s) for s in ((log.readlines()[4]).lstrip(' ')).split() if s.isdigit()][:2]
                 sample = file_name.split('_')[0]
                 with open(os.path.abspath(f"./OUT/samples.txt"), 'a') as out:
                     out.write(sample + '\t')
