@@ -45,7 +45,7 @@ folder = sys.argv[1]  # user needs to provide name of the folder where are all t
 # ******************************************************************************************
 species = 'human' 
 
-sample_naming = 1 #if 
+sample_naming = 1 #if sample naming is _1 and _2 should be equal to 1, if it is _R1 and _R2 should be equal to 0
 
 genome_fasta = 'Homo_sapiens.GRCh38.dna.primary_assembly.fa'
 
@@ -138,14 +138,13 @@ paired_end = {} #dictionary that will contain ID of all the samples
 
 for root, dirs, files in os.walk(folder):
         for file_name in files:
-            print(os.path.join(root, file_name))
             if "_" in file_name: #paired end
                 paired = file_name.split('_')[0]
                 if paired not in paired_end:
                     paired_end[paired] = 1
 
 
-folders = ['OUT', 'TRIMMED', 'STATUS', 'index', 'bowtie2', 'SALMON_OUT', 'plots', 'plots/differential']
+folders = ['OUT', 'TRIMMED', 'STATUS', 'index', 'bowtie2', 'SALMON_OUT', 'plots', 'plots/differential', 'plots/density']
 
 #create necessary folders
 for folder_name in folders:
@@ -159,7 +158,6 @@ for step in [qc, genome_assembly, mapping, salmon_index, gene_expr]:
     #st = time.time()   #ALL COMMENTED LINES IN THIS PART WERE USED FOR MEASURING EXECUTION TIME
     if (step.__name__ == "genome_assembly") or (step.__name__ == "salmon_index"):
         for command in step(): 
-            print("NEW", command )
             subprocess.run(command, shell=True)
         #et = time.time()
         #with open('time.txt', "a+" ) as t:
@@ -183,7 +181,6 @@ subprocess.run(f'python3 prepare_for_deseq_salmon.py expression_samples.txt {gro
 
 
 #differential expression using DESeq2
-print("Rscript is th eproblem")
 os.system(f'Rscript differential_expression.R {group_2}_vs_{group_1}.txt')
 
 #et = time.time() #TIME
