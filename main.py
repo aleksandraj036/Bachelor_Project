@@ -53,8 +53,6 @@ genome_gtf = 'Homo_sapiens.GRCh38.106.gtf'
 
 genome = 'Homo_sapiens.GRCh38'
 
-folder_in_index = 'index\chr22'
-
 group_1 = 'control'
 
 group_2 = 'case'
@@ -92,7 +90,7 @@ def qc(sample_id):
 def genome_assembly(): 
     genome_assembly = [
             f'chmod u+x -R hisat',
-            f'hisat/hisat-build {genome_fasta} {folder_in_index}', 
+            f'hisat/hisat-build {genome_fasta} index\genome', 
             f'python hisat/extract_splice_sites.py {genome_gtf} > {species}_splice_sites.txt',
     ]
     return genome_assembly
@@ -101,7 +99,7 @@ def mapping(sample_id):
     mapping = [
             f'chmod u+x -R hisat',
             f'hisat/hisat -q -p 4 -X 1000 --time --phred33 --rna-strandness RF --known-splicesite-infile '
-            f'{species}_splice_sites.txt --novel-splicesite-outfile novel.splice_sites.txt -x {folder_in_index} -1 '
+            f'{species}_splice_sites.txt --novel-splicesite-outfile novel.splice_sites.txt -x index\genome -1 '
             f'TRIMMED/{sample_id}_clean_R1.fastq -2 TRIMMED/{sample_id}_clean_R2.fastq -S {sample_id}.sam 2> '
             f'STATUS/{sample_id}_hisat.txt',
             f'samtools view -bS {sample_id}.sam > {sample_id}.bam',
