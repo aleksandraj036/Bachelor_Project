@@ -70,7 +70,7 @@ dev.off()
 #HISTOGRAM**************************************************************
 counts <- read.delim(file_groups, sep="\t", header=T, row.names=1)
 counts <- as.matrix(counts)
-design <- data.frame( condition=factor( c( "c", "c", "c", "c", "t", "t", "t", "t") ) )
+design <- data.frame( condition=factor( c( "c", "c", "c", "c", "t", "t", "t") ) )
 rownames(design) <- colnames(counts)
 dataset <- DESeqDataSetFromMatrix(countData = counts, colData = design, design = ~condition)
 dds <- DESeq(dataset)

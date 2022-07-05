@@ -22,7 +22,7 @@ The root folder must contain:
 
 # Check if all necessary programs are installed*********************************************
 
-programs = ['hisat', 'stringtie', 'trimmomatic']
+programs = ['hisat', 'trimmomatic']
 for p in programs:
     if not os.path.isdir(f'{os.getcwd()}/{p}'):
         print(f'Installing {p}')
@@ -110,9 +110,7 @@ def mapping(sample_id):
 
             f'samtools index {sample_id}.sorted.bam',
 
-            f'stringtie {sample_id}.sorted.bam -o {sample_id}.gtf -p 1 -G {genome_gtf} -A abundance.txt',
-            f'cuffcompare -r {genome_gtf} -R -o {sample_id} -C -G {sample_id}.gtf',
-            f'python counts_stringtie.py {sample_id}.combined.gtf' 
+            f'samtools stats {sample_id}.sorted.bam 1> samtools_stats/{sample_id}_stats.txt'
         ]
     return mapping
 
@@ -142,7 +140,7 @@ for root, dirs, files in os.walk(folder):
                     paired_end[paired] = 1
 
 
-folders = ['OUT', 'TRIMMED', 'STATUS', 'index', 'bowtie2', 'SALMON_OUT', 'plots', 'plots/differential', 'plots/density', 'plots/mapping', 'plots/quality']
+folders = ['OUT', 'TRIMMED', 'STATUS', 'index', 'bowtie2', 'SALMON_OUT', 'samtools_stats' , 'plots', 'plots/differential', 'plots/density', 'plots/mapping', 'plots/quality']
 
 #create necessary folders
 for folder_name in folders:
